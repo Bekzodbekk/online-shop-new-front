@@ -9,6 +9,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Selector from '../../UI/Selector/Selector';
 import InputColorCount from '../../UI/Test/InputColorCount';
 import { CreateProduct } from '../../API/api';
+import { useSnackbar } from 'notistack';
 
 const style = {
     position: 'absolute',
@@ -38,8 +39,6 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-
-
 const EnhancedInput = ({ label, value, onChange, error, helperText }) => {
     return (
         <Box sx={{ width: "100%", margin: "8px 0px" }}>
@@ -68,11 +67,12 @@ const EnhancedInput = ({ label, value, onChange, error, helperText }) => {
 };
 
 const AddProductModalWindow = ({ open, onClose }) => {
+    const { enqueueSnackbar } = useSnackbar()
+    
     const initialFormState = {
         productName: '',
         productNumber: '',
         productID: '',
-        productCount: '',
         productPrice: '',
         colorsCount: {},
         size: '',
@@ -127,7 +127,6 @@ const AddProductModalWindow = ({ open, onClose }) => {
 
     const handleFileUpload = (event) => {
         const files = Array.from(event.target.files);
-        console.log('Yuklangan fayllar:', files);
         setUploadedFiles(files);
     };
 
@@ -150,7 +149,6 @@ const AddProductModalWindow = ({ open, onClose }) => {
     };
 
     const getColorsArray = (colors) => {
-        console.log('Kelgan ranglar:', colors);
         setColorsArray(colors);
 
         const newColorsCount = {};
@@ -165,7 +163,6 @@ const AddProductModalWindow = ({ open, onClose }) => {
     };
 
     const handleSizeChange = (selectedSize) => {
-        console.log('Tanlangan o\'lcham:', selectedSize);
         setFormData(prev => ({
             ...prev,
             size: selectedSize
@@ -182,8 +179,6 @@ const AddProductModalWindow = ({ open, onClose }) => {
 
     const handleInputChange = (field) => (event) => {
         const newValue = event.target.value;
-        console.log(`${field} o'zgartirildi:`, newValue);
-
         setFormData(prev => ({
             ...prev,
             [field]: newValue
@@ -204,14 +199,6 @@ const AddProductModalWindow = ({ open, onClose }) => {
 
         if (!formData.productName.trim()) {
             newErrors.productName = 'Mahsulot nomi kiritilishi shart';
-            isValid = false;
-        }
-
-        if (!formData.productCount.trim()) {
-            newErrors.productCount = 'Mahsulot soni kiritilishi shart';
-            isValid = false;
-        } else if (isNaN(formData.productCount) || parseInt(formData.productCount) <= 0) {
-            newErrors.productCount = 'Mahsulot soni musbat son bo\'lishi kerak';
             isValid = false;
         }
 
@@ -260,14 +247,8 @@ const AddProductModalWindow = ({ open, onClose }) => {
         if (validateForm()) {
             setIsLoading(true);
             try {
-                const submitFormData = new FormData();
+                const totalColorCount = Object.values(formData.colorsCount).reduce((sum, count) => sum + count, 0);
 
-                // File upload
-                if (formData.files && formData.files.length > 0) {
-                    submitFormData.append('file', formData.files[0]);
-                }
-
-                // Create product request object according to proto schema
                 const productData = {
                     name: formData.productName,
                     unique_number: formData.productNumber,
@@ -275,26 +256,21 @@ const AddProductModalWindow = ({ open, onClose }) => {
                     price: parseInt(formData.productPrice),
                     size: formData.size,
                     colors: formData.colorsCount,
-                    count: parseInt(formData.productCount)
+                    count: totalColorCount
                 };
 
-                // Add product data as JSON string
+                const submitFormData = new FormData();
+
+                if (formData.files && formData.files.length > 0) {
+                    submitFormData.append('file', formData.files[0]);
+                }
+
                 submitFormData.append('product', JSON.stringify(productData));
 
-                const response = CreateProduct(submitFormData)
+                const response = CreateProduct(submitFormData);
+                enqueueSnackbar("Mahsulot muvaffaqiyatli qo'shildi", {variant: "success"})
                 console.log('Mahsulot muvaffaqiyatli qo\'shildi:', response);
-                // const response = await fetch(`${API_ADDPRODUCT_ENDPOINT}`, {
-                //     method: 'POST',
-                //     body: submitFormData
-                // });
 
-                // if (!response.ok) {
-                //     const errorData = await response.json();
-                //     throw new Error(errorData.error || 'Server xatosi yuz berdi');
-                // }
-
-                // const result = await response.json();
-                
                 resetForm();
                 onClose();
             } catch (error) {
@@ -388,14 +364,6 @@ const AddProductModalWindow = ({ open, onClose }) => {
                 </Box>
 
                 <EnhancedInput
-                    label="Mahsulot soni"
-                    value={formData.productCount}
-                    onChange={handleInputChange('productCount')}
-                    error={!!errors.productCount}
-                    helperText={errors.productCount}
-                />
-
-                <EnhancedInput
                     label="Mahsulot narxi"
                     value={formData.productPrice}
                     onChange={handleInputChange('productPrice')}
@@ -459,4 +427,4 @@ const AddProductModalWindow = ({ open, onClose }) => {
     );
 };
 
-export default AddProductModalWindow
+export default AddProductModalWindow;

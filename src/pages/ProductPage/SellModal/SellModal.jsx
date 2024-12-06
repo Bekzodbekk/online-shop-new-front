@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import { UpdateStock } from '../../../API/api';
+import { useSnackbar } from 'notistack';
 
 const style = {
     position: 'absolute',
@@ -22,6 +23,7 @@ const style = {
 
 export default function SellModal({ isOpen, onClose, productPrice, productColor, productID }) {
     const [price, setPrice] = React.useState('');
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleSell = () => {
         const formData = {
@@ -31,8 +33,9 @@ export default function SellModal({ isOpen, onClose, productPrice, productColor,
             selling_price: parseInt(price)
         }
         const response = UpdateStock(formData)
+        enqueueSnackbar("Mahsulot muvaffaqiyatli sotildi!", { variant: "success" })
         console.log('data: ', response);
-        setPrice(''); 
+        setPrice('');
         onClose();
     };
 

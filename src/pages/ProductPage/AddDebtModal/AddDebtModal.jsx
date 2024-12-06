@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { CreateDebtAPI } from '../../../API/api';
 import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 const style = {
   position: 'absolute',
@@ -41,7 +42,7 @@ const style = {
 export default function DebtModal({ isOpen, onClose, bagID, color}) {
   const [deadline, setDeadline] = useState("")
   const navigate = useNavigate()
-  
+  const {enqueueSnackbar} = useSnackbar()
   const [debtDetails, setDebtDetails] = React.useState({
     first_name: '',
     last_name: '',
@@ -128,8 +129,8 @@ export default function DebtModal({ isOpen, onClose, bagID, color}) {
     
     debtDetails.deadline = deadline
     
-    const response = CreateDebtAPI(debtDetails)
-    console.log(response);
+    CreateDebtAPI(debtDetails)
+    enqueueSnackbar("Qarz muvaffaqiyatli qo'shildi", {variant: "success"})
     
     // If all validations pass
     console.log('Debt Details:', debtDetails);

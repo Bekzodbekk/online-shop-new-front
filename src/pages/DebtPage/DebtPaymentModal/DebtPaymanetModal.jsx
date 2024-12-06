@@ -6,7 +6,7 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import { UpdateStockDebtAPI } from '../../../API/api';
 import { useNavigate } from 'react-router-dom';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 
 const style = {
   position: 'absolute',
@@ -105,12 +105,10 @@ const DebtPaymentModalContent = ({ isOpen, onClose, id }) => {
 // Asosiy komponent: SnackbarProvider bilan o'ralgan
 export default function DebtPaymentModal({ isOpen, onClose, id }) {
   return (
-    <SnackbarProvider maxSnack={3}>
       <DebtPaymentModalContent
         id={id}
         isOpen={isOpen}
         onClose={onClose}
       />
-    </SnackbarProvider>
   );
 }
