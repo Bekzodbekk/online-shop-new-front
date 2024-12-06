@@ -1,0 +1,26 @@
+.debt_page{
+    .debt_page_con{
+        .search{
+            border: 1px solid #6B6B6B;
+            height: 62px;
+            margin: 10px;
+            border-radius: 8px;
+
+            input{
+                outline: none;
+                height: 100%;
+                width: 100%;
+                background-color: transparent;
+                border: none;
+                font-size: 20px;
+                color: #fff;
+                padding: 0 20px;
+            }
+        }
+        .debt_items{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+}

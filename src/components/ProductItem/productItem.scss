@@ -1,0 +1,37 @@
+.product_item {
+    cursor: pointer;
+
+    .product_item_con {
+        display: flex;
+        align-items: center;
+        background-color: #1e1e1e;
+        padding: 15px 10px;
+        gap: 40px;
+        border-radius: 6px;
+        transition: .1s linear;
+
+        &:hover{
+            background-color: #303030;
+        }
+        
+        &:hover{
+            background-color: #303030;
+        }
+        
+
+        img {
+            height: 180px;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+
+            &>* {
+                color: #fff;
+                font-weight: 400;
+            }
+        }
+    }
+}

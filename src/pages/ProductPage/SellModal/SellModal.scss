@@ -1,0 +1,16 @@
+.content{
+    display: flex;
+    flex-direction: column;
+
+    h1{
+        font-size: 30px;
+    }
+    input{
+        height: 40px;
+        font-size: 20px;
+        background-color: transparent;
+        border: 2px solid #414141;
+        padding-left: 10px;
+        border-radius: 5px;
+    }
+}

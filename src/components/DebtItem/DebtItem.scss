@@ -1,0 +1,26 @@
+.debt_item{
+    margin: 0 10px;
+    
+    &_con{
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        cursor: pointer;
+        padding: 30px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        transition: .1s linear;
+
+        &:hover{
+            background-color: #303030;
+        }
+        h1, span{
+            font-weight: 500;
+            color: #fff;
+            font-size: 20px;
+        }
+        span{
+            font-weight: 300;
+        }
+    }
+}

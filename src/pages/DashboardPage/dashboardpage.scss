@@ -1,0 +1,17 @@
+.dashboard_page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden; // Ekran tashqarisiga chiqishni oldini olish
+
+    .dashboard_con {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        max-height: 90vh; // Cheklangan balandlik
+        overflow-y: auto; // Ichida scroll paydo bo'lishi uchun
+    }
+}
